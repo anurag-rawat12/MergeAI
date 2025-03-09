@@ -14,7 +14,6 @@ import { Send } from 'lucide-react';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { duotoneLight, duotoneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const InputContainer = () => {
 
@@ -34,20 +33,9 @@ const InputContainer = () => {
         }
     }, [text]);
 
-    const [theme, setTheme] = useState(duotoneLight);
     const [chatHistory, setChatHistory] = useState<{ role: "user" | "assistant"; content: string }[]>([]);
     const [summaries, setSummaries] = useState<string[]>([]);
 
-
-    useEffect(() => {
-        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        const updateTheme = (e) => setTheme(e.matches ? duotoneDark : duotoneLight);
-
-        updateTheme(darkModeMediaQuery);
-
-        darkModeMediaQuery.addEventListener('change', updateTheme);
-        return () => darkModeMediaQuery.removeEventListener('change', updateTheme);
-    }, []);
 
     const handleGemini = async () => {
         try {
@@ -147,28 +135,17 @@ const InputContainer = () => {
                             <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 components={{
-                                    h1: ({ node, ...props }) => (
-                                        <h1 className="text-2xl font-bold my-2" {...props} />
-                                    ),
-                                    h2: ({ node, ...props }) => (
-                                        <h2 className="text-xl font-bold my-2" {...props} />
-                                    ),
-                                    h3: ({ node, ...props }) => (
-                                        <h3 className="text-lg font-bold my-2" {...props} />
-                                    ),
-                                    p: ({ node, ...props }) => (
-                                        <p className={`${chat.role === "user" ? "" : "mb-2"}`} {...props} />
-                                    ),
-                                    strong: ({ node, ...props }) => (
-                                        <strong className="font-bold" {...props} />
-                                    ),
-                                    em: ({ node, ...props }) => <em className="italic" {...props} />,
-                                    code: ({ node, inline, className, children, ...props }) => {
+                                    h1: (props) => <h1 className="text-2xl font-bold my-2" {...props} />,
+                                    h2: (props) => <h2 className="text-xl font-bold my-2" {...props} />,
+                                    h3: (props) => <h3 className="text-lg font-bold my-2" {...props} />,
+                                    p: (props) => <p className={`${chat.role === "user" ? "" : "mb-2"}`} {...props} />,
+                                    strong: (props) => <strong className="font-bold" {...props} />,
+                                    em: (props) => <em className="italic" {...props} />,
+                                    code: ({ inline, className, children, ...props }: { inline?: boolean; className?: string; children?: React.ReactNode }) => {
                                         const match = /language-(\w+)/.exec(className || '');
                                         if (!inline && match) {
                                             return (
                                                 <SyntaxHighlighter
-                                                    style={theme}
                                                     language={match[1]}
                                                     PreTag="div"
                                                     customStyle={{
@@ -188,38 +165,22 @@ const InputContainer = () => {
                                             </code>
                                         );
                                     },
-                                    ul: ({ node, ...props }) => (
-                                        <ul className="list-disc pl-6 mb-2" {...props} />
+                                    ul: (props) => <ul className="list-disc pl-6 mb-2" {...props} />,
+                                    ol: (props) => <ol className="list-decimal pl-6 mb-2" {...props} />,
+                                    blockquote: (props) => (
+                                        <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-600 my-2" {...props} />
                                     ),
-                                    ol: ({ node, ...props }) => (
-                                        <ol className="list-decimal pl-6 mb-2" {...props} />
-                                    ),
-                                    blockquote: ({ node, ...props }) => (
-                                        <blockquote
-                                            className="border-l-4 border-gray-300 pl-4 italic text-gray-600 my-2"
-                                            {...props}
-                                        />
-                                    ),
-                                    table: ({ node, ...props }) => (
-                                        <table className="border-collapse border border-gray-300 w-full my-2" {...props} />
-                                    ),
-                                    thead: ({ node, ...props }) => (
-                                        <thead className="bg-gray-200" {...props} />
-                                    ),
-                                    tbody: ({ node, ...props }) => <tbody {...props} />,
-                                    tr: ({ node, ...props }) => (
-                                        <tr className="border border-gray-300" {...props} />
-                                    ),
-                                    th: ({ node, ...props }) => (
-                                        <th className="border border-gray-300 px-4 py-2 text-left" {...props} />
-                                    ),
-                                    td: ({ node, ...props }) => (
-                                        <td className="border border-gray-300 px-4 py-2" {...props} />
-                                    ),
+                                    table: (props) => <table className="border-collapse border border-gray-300 w-full my-2" {...props} />,
+                                    thead: (props) => <thead className="bg-gray-200" {...props} />,
+                                    tbody: (props) => <tbody {...props} />,
+                                    tr: (props) => <tr className="border border-gray-300" {...props} />,
+                                    th: (props) => <th className="border border-gray-300 px-4 py-2 text-left" {...props} />,
+                                    td: (props) => <td className="border border-gray-300 px-4 py-2" {...props} />,
                                 }}
                             >
                                 {chat.content}
                             </ReactMarkdown>
+
 
 
                         </div>

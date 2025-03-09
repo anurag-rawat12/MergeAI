@@ -26,6 +26,6 @@ export async function POST(req: Request) {
         return NextResponse.json({ answer, summary });
 
     } catch (e) {
-        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+        return NextResponse.json({ error: "Something went wrong " , e }, { status: 500 });
     }
 }
