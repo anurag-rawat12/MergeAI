@@ -14,6 +14,7 @@ export async function POST(req: Request) {
 
         const fullPrompt = `${extra} + "\n\n\n" Previous conversation summaries: ${summaries.join(" ")}. Now answer: ${prompt}`;
 
+        
         const response = await model.generateContent(fullPrompt);
         const answer = response.response.text();
 

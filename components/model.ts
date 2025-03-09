@@ -1,7 +1,7 @@
 export const models = [
     {
-        name: "Open AI o1",
-        model: "o1"
+        name: "gpt 4o-mini",
+        model: "gpt-4o-mini"
     },
     {
         name: "Open AI o3-mini",
@@ -18,6 +18,10 @@ export const models = [
     {
         name: "DeepSeek R1",
         model: "DeepSeek-R1"
+    },
+    {
+        name: "DeepSeek V3",
+        model: "DeepSeek-V3"
     },
     {
         name: "Cohere command r",

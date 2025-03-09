@@ -11,7 +11,7 @@ export async function POST(req: Request) {
         const extra = extraPrompt;
 
         const fullPrompt = `${extra} + "\n\n\n" Previous conversation summaries: ${summaries.join(" ")}. Now answer: ${prompt}`;
-        const token = process.env.GITHUB_TOKEN!;
+        const token = process.env.GITHUB_MARKETPLACE_TOKEN!;
 
         const client = ModelClient(
             "https://models.inference.ai.azure.com",
@@ -58,6 +58,7 @@ export async function POST(req: Request) {
         });
 
     } catch (e) {
+        console.log(e);
         return NextResponse.json({ error: "An error occurred" }, { status: 500 });
     }
 }

@@ -122,7 +122,6 @@ const InputContainer = () => {
         }
     };
 
-
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
         setText2(e.target.value);
@@ -142,7 +141,7 @@ const InputContainer = () => {
                             className={`text-[16px] leading-6 font-sans
                                                 ${chat.role === "user"
                                     ? "bg-[#f3f3f3] max-w-[70%] px-[20px] py-[10px] text-black rounded-3xl"
-                                    : "max-w-[100%] text-black "
+                                    : "max-w-[100%] text-black"
                                 }`}
                         >
                             <ReactMarkdown
